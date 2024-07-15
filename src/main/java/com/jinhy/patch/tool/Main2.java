@@ -16,9 +16,9 @@ public class Main2 {
 
     public static final String[] SUB_FOLDER_ARRAY = new String[]{"clzx-dzjz-bp", "dossier"};
 
-    public static final String ORI_FOLDER = "D:\\CompanyWorkspace\\卷宗\\工作记录\\打包\\原始版本文件";
+    public static final String ORI_FOLDER = "D:\\CompanyWorkspace\\卷宗\\工作记录\\打包\\20240712\\update001";
 
-    public static final String UPDATE_FOLDER = "D:\\CompanyWorkspace\\卷宗\\工作记录\\打包\\20240712\\update001";
+    public static final String UPDATE_FOLDER = "D:\\CompanyWorkspace\\卷宗\\工作记录\\打包\\20240715\\update001";
 
     public static void main(String[] args) {
         long now = new Date().getTime();
@@ -50,20 +50,24 @@ public class Main2 {
                     // 先判断是否是新增的
                     File oriFile = getOriFile(updateFile);
                     if (!oriFile.exists()) {
-                        FileUtil.copy(updateFile, new File(resultFolder + system), true);
+                        copyFile(updateFile, resultFolder);
                         continue;
                     }
 
                     // 如果是文件的话则进行比对
                     if (FileUtil.isFile(updateFile) && !FileUtil.contentEquals(updateFile, oriFile)) {
-                        String filePath = StrUtil.removePrefix(updateFile.getAbsolutePath(), UPDATE_FOLDER + File.separator);
-                        filePath = StrUtil.removeSuffix(filePath, updateFile.getName());
-                        FileUtil.copy(updateFile, FileUtil.mkdir(resultFolder + File.separator + filePath), true);
+                        copyFile(updateFile, resultFolder);
                         continue;
                     }
                 }
             }
         }
+    }
+
+    private static void copyFile(File updateFile, String resultFolder) {
+        String filePath = StrUtil.removePrefix(updateFile.getAbsolutePath(), UPDATE_FOLDER + File.separator);
+        filePath = StrUtil.removeSuffix(filePath, updateFile.getName());
+        FileUtil.copy(updateFile, FileUtil.mkdir(resultFolder + File.separator + filePath), true);
     }
 
     public static File getOriFile(File file) {
