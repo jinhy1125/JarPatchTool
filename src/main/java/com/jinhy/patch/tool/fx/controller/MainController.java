@@ -1,9 +1,18 @@
-package com.jinhy.patch.tool;
+/**
+ * @projectName JarPatchTool
+ * @package com.jinhy.patch.tool.fx.controller
+ * @className com.jinhy.patch.tool.fx.controller.MainController
+ * @copyright Copyright 2024 Thunisoft, Inc All rights reserved.
+ */
+package com.jinhy.patch.tool.fx.controller;
 
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -12,33 +21,48 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class Main2 {
+/**
+ * MainController
+ *
+ * @author huayu
+ * @version TODO
+ * @description
+ * @date 2024/7/15 20:36
+ */
+public class MainController {
 
-    /**
-     * "clzx-dzjz-bp", "dossier", "dist"
-     */
-    public static final String[] SUB_FOLDER_ARRAY = new String[]{"dist"};
 
-    public static final String ORI_FOLDER = "D:\\CompanyWorkspace\\卷宗\\工作记录\\打包\\20240715\\update002";
+    @FXML
+    private TextField systems;
 
-    public static final String UPDATE_FOLDER = "D:\\CompanyWorkspace\\卷宗\\工作记录\\打包\\20240716\\update001";
+    @FXML
+    private TextField originFolderPath;
 
-    public static void main(String[] args) {
+    @FXML
+    private TextField updateFolderPath;
+
+    @FXML
+    private Button executeBtn;
+
+    public void createPatchFiles(MouseEvent mouseEvent) {
+        String updateFolder = updateFolderPath.getText();
+        String oriFolder = originFolderPath.getText();
+        String[] systemArr = StrUtil.splitToArray(StrUtil.trim(systems.getText()), ",");
         long now = new Date().getTime();
-        String resultFolder = UPDATE_FOLDER + File.separator + now;
-        for (String system : SUB_FOLDER_ARRAY) {
-            String oriBasePath = ORI_FOLDER + File.separator + system;
-            String updateBasePath = UPDATE_FOLDER + File.separator + system;
+        String resultFolder = updateFolder + File.separator + now;
+        for (String system : systemArr) {
+            String oriBasePath = oriFolder + File.separator + system;
+            String updateBasePath = updateFolder + File.separator + system;
 
             File needDeleteFile = new File(resultFolder + File.separator + system + ".needDelete.txt");
             List<File> oriFiles = FileUtil.loopFiles(oriBasePath);
             List<File> updateFiles = FileUtil.loopFiles(updateBasePath);
 
             Set<String> oriFileNameSet = oriFiles.stream()
-                    .map(file -> StrUtil.removePrefix(file.getAbsolutePath(), ORI_FOLDER + File.separator))
+                    .map(file -> StrUtil.removePrefix(file.getAbsolutePath(), oriFolder + File.separator))
                     .collect(Collectors.toSet());
             Set<String> updateFileNameSet = updateFiles.stream()
-                    .map(file -> StrUtil.removePrefix(file.getAbsolutePath(), UPDATE_FOLDER + File.separator))
+                    .map(file -> StrUtil.removePrefix(file.getAbsolutePath(), updateFolder + File.separator))
                     .collect(Collectors.toSet());
             oriFileNameSet.removeAll(updateFileNameSet);
             // 需要删除
@@ -67,19 +91,19 @@ public class Main2 {
         }
     }
 
-    private static void copyFile(File updateFile, String resultFolder) {
-        String filePath = StrUtil.removePrefix(updateFile.getAbsolutePath(), UPDATE_FOLDER + File.separator);
+    private void copyFile(File updateFile, String resultFolder) {
+        String filePath = StrUtil.removePrefix(updateFile.getAbsolutePath(), updateFolderPath.getText() + File.separator);
         filePath = StrUtil.removeSuffix(filePath, updateFile.getName());
         FileUtil.copy(updateFile, FileUtil.mkdir(resultFolder + File.separator + filePath), true);
     }
 
-    public static File getOriFile(File file) {
-        String oriFilePath = StrUtil.replace(file.getAbsolutePath(), UPDATE_FOLDER, ORI_FOLDER);
+    public File getOriFile(File file) {
+        String oriFilePath = StrUtil.replace(file.getAbsolutePath(), updateFolderPath.getText(), originFolderPath.getText());
         return new File(oriFilePath);
     }
 
-    public static File getResultFile(File file, String resultFolder) {
-        String resultFilePath = StrUtil.replace(file.getAbsolutePath(), UPDATE_FOLDER, resultFolder);
+    public File getResultFile(File file, String resultFolder) {
+        String resultFilePath = StrUtil.replace(file.getAbsolutePath(), updateFolderPath.getText(), resultFolder);
         return new File(resultFilePath);
     }
 }
