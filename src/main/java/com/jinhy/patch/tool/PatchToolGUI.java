@@ -30,7 +30,7 @@ public class PatchToolGUI extends Application {
         Scene scene = new Scene(root);
 
         // 设置舞台（窗口）的标题
-        primaryStage.setTitle("JavaFX Client Program");
+        primaryStage.setTitle("JarPatchTool");
 
         // 设置舞台的场景
         primaryStage.setScene(scene);

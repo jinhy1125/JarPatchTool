@@ -10,6 +10,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -45,6 +46,7 @@ public class MainController {
     private Button executeBtn;
 
     public void createPatchFiles(MouseEvent mouseEvent) {
+        executeBtn.setDisable(true);
         String updateFolder = updateFolderPath.getText();
         String oriFolder = originFolderPath.getText();
         String[] systemArr = StrUtil.splitToArray(StrUtil.trim(systems.getText()), ",");
@@ -53,6 +55,9 @@ public class MainController {
         for (String system : systemArr) {
             String oriBasePath = oriFolder + File.separator + system;
             String updateBasePath = updateFolder + File.separator + system;
+            if (!FileUtil.exist(updateBasePath) || !FileUtil.exist(oriBasePath)) {
+                continue;
+            }
 
             File needDeleteFile = new File(resultFolder + File.separator + system + ".needDelete.txt");
             List<File> oriFiles = FileUtil.loopFiles(oriBasePath);
@@ -89,6 +94,10 @@ public class MainController {
                 }
             }
         }
+
+        Alert finishAlert = new Alert(Alert.AlertType.INFORMATION, "增量包生成完成");
+        finishAlert.showAndWait();
+        executeBtn.setDisable(false);
     }
 
     private void copyFile(File updateFile, String resultFolder) {
