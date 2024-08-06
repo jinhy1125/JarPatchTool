@@ -104,7 +104,7 @@ public class MainController {
         String filePath = StrUtil.removePrefix(updateFile.getAbsolutePath(), updateFolderPath.getText() + File.separator);
         String updateFileName = updateFile.getName();
         // 添加一些筛选，筛选其实不该放在这个代码里，应该前置，懒得搞了
-        if (StrUtil.contains(filePath, "META-INFO") || StrUtil.equals(updateFileName, "git.properties")) {
+        if (StrUtil.contains(filePath, "META-INF") || StrUtil.equals(updateFileName, "git.properties")) {
             return;
         }
         filePath = StrUtil.removeSuffix(filePath, updateFileName);
