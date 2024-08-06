@@ -9,7 +9,7 @@
 fx:controller="com.jinhy.patch.tool.fx.controller.MainController">
    <children>
       <Label alignment="CENTER" layoutX="24.0" layoutY="11.0" prefHeight="36.0" prefWidth="88.0" text="模块文件夹" textAlignment="CENTER" />
-      <TextField fx:id="systems" layoutX="124.0" layoutY="18.0" prefHeight="23.0" prefWidth="403.0" promptText="clzx-dzjz-bp,dossier,dist,settings" text="clzx-dzjz-bp,dossier,dist,settings" />
+      <TextField fx:id="systems" layoutX="124.0" layoutY="18.0" prefHeight="23.0" prefWidth="403.0" promptText="clzx-dzjz-bp,clzx-dzjz-app,dist,settings" text="clzx-dzjz-bp,clzx-dzjz-app,dist,settings" />
       <Label alignment="CENTER" layoutX="24.0" layoutY="41.0" prefHeight="36.0" prefWidth="88.0" text="原始文件目录" textAlignment="CENTER" />
       <TextField fx:id="originFolderPath" layoutX="124.0" layoutY="48.0" prefHeight="23.0" prefWidth="403.0" promptText="原始目录" text="D:\CompanyWorkspace\卷宗\工作记录\打包\20240716\update001" />
       <Label alignment="CENTER" layoutX="24.0" layoutY="71.0" prefHeight="36.0" prefWidth="88.0" text="最新文件目录" textAlignment="CENTER" />
